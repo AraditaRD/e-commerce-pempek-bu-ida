@@ -1,4 +1,4 @@
-Pempek Bu Ida 🍜
+E-commerce Pempek Bu Ida 🍜
 
 Website e-commerce makanan khas Palembang
 
