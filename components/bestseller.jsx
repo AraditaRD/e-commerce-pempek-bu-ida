@@ -8,7 +8,7 @@
             {/* Pempek Kapal Selam */}
             <div className="product-card bg-white rounded-2xl p-4 border border-gray-100 flex flex-col">
             <div className="product-image-container w-full h-32">
-                <img  src="/e-commerce-pempek-bu-ida/images/pempek kapal selam.jpg" alt="Pempek Kapal Selam" className="w-full h-full object-cover" />
+                <img src="/images/pempek kapal selam.jpg" alt="Pempek Kapal Selam" className="w-full h-full object-cover" />
             </div>
             <h3 className="font-semibold mt-3 text-gray-800">Pempek Kapal Selam</h3>
             <p className="text-sm text-gray-500">Makanan</p>
