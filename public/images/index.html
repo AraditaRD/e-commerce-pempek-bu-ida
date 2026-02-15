@@ -1,0 +1,732 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5" />
+    <title>Pempek Bu Ida</title>
+    <!-- Tailwind via CDN + font inter -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #fafaf9; }
+        .old-price { text-decoration: line-through; color: #9ca3af; margin-right: 6px; }
+        .product-card { transition: all 0.15s ease; }
+        .product-card:hover { box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.02); transform: translateY(-2px); }
+        .badge { font-size: 0.7rem; letter-spacing: 0.5px; }
+        .product-image-container { background-color: #f3f4f6; border-radius: 0.75rem; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        /* Cart dropdown */
+        .cart-dropdown { transition: opacity 0.2s, visibility 0.2s; }
+        .cart-dropdown.show { opacity: 1; visibility: visible; }
+        .cart-dropdown.hide { opacity: 0; visibility: hidden; }
+    </style>
+    </head>
+    <body class="antialiased text-gray-800">
+
+    <!-- ======= HEADER / NAVBAR (dengan ikon keranjang) ======= -->
+    <header class="sticky top-5 z-40 px-4">
+    <div class="max-w-7xl mx-auto bg-white/80 backdrop-blur-sm shadow-xl rounded-2xl border border-gray-100">
+    <div class="flex items-center justify-between h-16 lg:h-20 px-4 sm:px-6 lg:px-8">
+        <!-- Logo dengan gradasi hijau -->
+        <div class="flex items-center gap-2">
+        <span class="text-2xl font-extrabold tracking-tight bg-gradient-to-r from-green-700 to-green-400 bg-clip-text text-transparent">Pempek Bu Ida</span>
+        </div>
+        <!-- ====== SALIN SEMUA ELEMEN DI BAWAH INI PERSIS SEPERTI ASLINYA ====== -->
+        <!-- Desktop navigation -->
+        <nav class="hidden md:flex space-x-6 text-sm font-medium">
+            <a href="#best-seller" class="hover:text-green-700 transition">Best Seller</a>
+            <a href="#kategori" class="hover:text-green-700 transition">Kategori</a>
+            <a href="#mulai-belanja" class="hover:text-green-700 transition">Belanja</a>
+            <a href="#subscribe" class="hover:text-green-700 transition">Subscribe</a>
+        </nav>
+        <!-- Right side -->
+        <div class="flex items-center gap-3">
+            <div class="hidden lg:flex items-center text-sm bg-amber-50 px-3 py-1.5 rounded-full border border-amber-200">
+                <span class="font-semibold text-amber-800">20% off</span>
+                <span class="text-amber-700 mx-1">•</span>
+                <span class="text-amber-800">first order</span>
+                <button class="ml-2 text-xs bg-amber-600 text-white px-3 py-1 rounded-full hover:bg-amber-700 transition font-medium">Subscribe</button>
+            </div>
+            <a href="#" class="text-sm font-medium text-gray-700 hover:text-green-700">Log In</a>
+            <!-- Ikon Keranjang (jangan diubah) -->
+            <div class="relative">
+                <button id="cartButton" class="p-2 rounded-md text-gray-700 hover:bg-gray-100 relative">
+                    <!-- SVG ... (salin dari kode asli) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                    </svg>
+                    <span id="cartBadge" class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+                </button>
+                <!-- Dropdown (salin dari kode asli) -->
+                <div id="cartDropdown" class="cart-dropdown hide absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 overflow-hidden">
+                    <!-- ... isi dropdown ... -->
+                </div>
+            </div>
+            <!-- Mobile menu button -->
+            <button class="md:hidden p-2 rounded-md text-gray-600 hover:bg-gray-100">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
+        </div>
+    </div>
+    </div>
+</header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 lg:space-y-16">
+
+        <!-- ======= HERO: Enak, Murah & Cepat Sampai ======= -->
+    <section class="relative bg-gradient-to-br from-green-50 to-emerald-50 rounded-3xl p-6 md:p-10 flex flex-col md:flex-row items-center justify-between overflow-hidden">
+    <div class="max-w-xl text-center md:text-left">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">Enak, Murah &<br />Cepat Sampai</h1>
+        <p class="text-lg md:text-xl text-gray-700 mt-3">Makanan Khas Dari <span class="font-bold text-green-700">Palembang</span></p>
+        <div class="mt-6 flex flex-wrap gap-3 justify-center md:justify-start">
+        <span class="bg-white px-5 py-2 rounded-full text-sm font-medium shadow-sm">🇮🇩 INDONESIA</span>
+        <span class="bg-green-700 text-white px-6 py-2 rounded-full text-sm font-medium shadow-md hover:bg-green-800 transition cursor-pointer">Shop now</span>
+        </div>
+    </div>
+    <!-- Gambar dengan efek gelombang di sisi kiri -->
+    <div class="relative mt-8 md:mt-0 md:w-1/2 lg:w-5/12 flex justify-center">
+        <!-- Shape gelombang (SVG) -->
+        <div class="absolute -left-6 top-0 bottom-0 w-16 text-green-700 opacity-20 hidden md:block">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="w-full h-full">
+            <path d="M0,0 Q30,50 0,100 L100,100 L100,0 Z" fill="currentColor" />
+        </svg>
+        </div>
+        <!-- Gambar utama -->
+        <img src="Pempek-Palembang.webp" alt="Makanan Khas Palembang" class="rounded-2xl shadow-lg w-full max-w-sm object-cover">
+    </div>
+    </section>
+
+        <!-- ======= BEST DEALS (5 produk) ======= -->
+        <section id="best-seller">
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 flex items-center gap-2">🏷️ Best Seller</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-3">
+            <!-- 1. Pempek Kapal Selam -->
+            <div class="product-card bg-white rounded-2xl p-4 border border-gray-100 flex flex-col">
+            <div class="product-image-container w-full h-32">
+                <img src="pempek kapal selam.jpg" alt="Pempek Kapal Selam" class="w-full h-full object-cover">
+            </div>
+            <h3 class="font-semibold mt-3 text-gray-800">Pempek Kapal Selam</h3>
+            <p class="text-sm text-gray-500">Makanan</p>
+            </div>
+            <!-- 2. Tekwan -->
+            <div class="product-card bg-white rounded-2xl p-4 border border-gray-100">
+            <div class="product-image-container w-full h-32">
+                <img src="tekwan.webp" alt="Tekwan" class="w-full h-full object-cover">
+            </div>
+            <h3 class="font-semibold mt-3">Tekwan</h3>
+            <p class="text-sm text-gray-500">Makanan</p>
+            </div>
+            <!-- 3. Pempek Telur -->
+            <div class="product-card bg-white rounded-2xl p-4 border border-gray-100 relative">
+            <div class="product-image-container w-full h-32">
+                <img src="pempek telur.jpg" alt="Pempek Telur" class="w-full h-full object-cover">
+            </div>
+            <h3 class="font-semibold mt-3">Pempek Telur</h3>
+            <p class="text-sm text-gray-500">Makanan</p>
+            </div>
+            <!-- 4. Es Kacang Merah -->
+            <div class="product-card bg-white rounded-2xl p-4 border border-gray-100 relative">
+            <div class="product-image-container w-full h-32">
+                <img src="es kacang merah.jpg" alt="Es Kacang Merah" class="w-full h-full object-cover">
+            </div>
+            <h3 class="font-semibold mt-3">Es Kacang Merah</h3>
+            <p class="text-sm text-gray-500">Minuman</p>
+            </div>
+        </div>
+        </section>
+
+            <!-- ======= BUNDLING & DISKON HARI INI (dengan background gambar) ======= -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <!-- Bundling: Beli 2 Lebih Hemat -->
+    <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-100">
+        <!-- Background image (gelap transparan) -->
+        <div class="absolute inset-0 w-full h-full">
+        <img src="https://placehold.co/800x600/amber-50/f59e0b?text=Promo+Bundling" 
+            alt="Bundling background" 
+            class="w-full h-full object-cover opacity-30">
+        </div>
+        <!-- Konten di atas background -->
+        <div class="relative z-10 p-6 flex flex-col items-start">
+        <span class="bg-amber-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">BUNDLING</span>
+        <h2 class="text-3xl font-bold mt-3 text-amber-900">Beli 2 Lebih Hemat!</h2>
+        <p class="text-amber-800 font-medium mt-1 max-w-xs">Dapatkan diskon 10% saat membeli 2 produk dari kategori ini.</p>
+        <button class="mt-4 bg-amber-700 hover:bg-amber-800 text-white px-6 py-2.5 rounded-full text-sm font-medium shadow-md transition">Shop Now</button>
+        </div>
+    </div>
+
+    <!-- Diskon Hari Ini -->
+    <div class="relative rounded-3xl overflow-hidden bg-gradient-to-br from-red-50 to-orange-100">
+        <div class="absolute inset-0 w-full h-full">
+        <img src="https://placehold.co/800x600/red-50/ef4444?text=Diskon+Hari+Ini" 
+            alt="Diskon background" 
+            class="w-full h-full object-cover opacity-30">
+        </div>
+        <div class="relative z-10 p-6 flex flex-col items-start">
+        <span class="bg-red-600 text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Diskon</span>
+        <h2 class="text-3xl font-bold mt-3 text-red-900">Diskon Hari Ini</h2>
+        <button class="mt-4 bg-red-700 hover:bg-red-800 text-white px-8 py-2.5 rounded-full text-sm font-medium shadow-md transition">Shop Now</button>
+        </div>
+    </div>
+    </div>
+
+        <!-- ======= MOST POPULAR CATEGORIES ======= -->
+        <section id="kategori">
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6">🔥 Kategori Paling Populer</h2>
+        <div class="grid grid-cols-3 md:grid-cols-3 gap-5">
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 text-center hover:shadow-md transition">
+            <div class="bg-green-50 w-20 h-20 mx-auto rounded-full flex items-center justify-center overflow-hidden">
+                <img src="Pempek-Palembang.webp" alt="Makanan" class="w-full h-full object-cover">
+            </div>
+            <p class="font-semibold mt-3">Makanan</p>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 text-center hover:shadow-md transition">
+            <div class="bg-amber-50 w-20 h-20 mx-auto rounded-full flex items-center justify-center overflow-hidden">
+                <img src="es kacang merah.jpg" alt="Minuman" class="w-full h-full object-cover">
+            </div>
+            <p class="font-semibold mt-3">Minuman</p>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-gray-100 text-center hover:shadow-md transition">
+            <div class="bg-purple-50 w-20 h-20 mx-auto rounded-full flex items-center justify-center overflow-hidden">
+                <img src="kemplang.webp" alt="Add Topping" class="w-full h-full object-cover">
+            </div>
+            <p class="font-semibold mt-3">Add Toping</p>
+            </div>
+        </div>
+        </section>
+
+        <!-- ======= START YOUR CART (5 produk horizontal) ======= -->
+        <section id="mulai-belanja">
+        <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6">🛒 Mulai Belanja</h2>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+            <!-- Pempek Adaan -->
+            <div class="bg-white p-2 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="pempek adaan.jpg" alt="Pempek Adaan" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Pempek Adaan</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 15.000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Pempek Adaan"
+                data-price="15000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Pempek+Adaan">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Pempek Kapal Selam -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="pempek kapal selam.jpg" alt="Pempek Kapal Selam" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Pempek Kapal Selam</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 35.000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Pempek Kapal Selam"
+                data-price="35000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Pempek+Kapal+Selam">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Pempek Telur -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="pempek telur.jpg" alt="Pempek Telur" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Pempek Telur</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 18.000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Pempek Telur"
+                data-price="18000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Pempek+Telur">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Pempek Kulit -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="pempek kulit.webp" alt="Pempek Kulit" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Pempek Kulit</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 15.000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Pempek Kulit"
+                data-price="15000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Pempek+Kulit">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Laksan -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="laksan.webp" alt="Laksan" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Laksan</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 15.000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Laksan"
+                data-price="15000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Laksan">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Model -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="model.jpg" alt="Model" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Model</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 15.000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Model"
+                data-price="15000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Model">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Pindang Patin -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="pindang patin.webp" alt="Pindang Patin" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Pindang Patin</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 45.000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Pindang Patin"
+                data-price="45000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Pindang+Patin">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Burgo -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="burgo.webp" alt="Burgo" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Burgo</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 15.000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Burgo"
+                data-price="15000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Burgo">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Opor Ayam Nanas -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="opor ayam nanas.jpg" alt="Opor Ayam Nanas" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Opor Ayam Nanas</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 30.000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Opor Ayam Nanas"
+                data-price="30000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Opor+Ayam+Nanas">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Kemplang -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="kemplang.webp" alt="Kemplang" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Kemplang</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 2.000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Kemplang"
+                data-price="2000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Kemplang">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Es Kacang Merah -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="es kacang merah.jpg" alt="Es Kacang Merah" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Es Kacang Merah</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 15.000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Es Kacang Merah"
+                data-price="15000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Es+Kacang+Merah">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Es Durian -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="es durian.webp" alt="Es Durian" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Es Durian</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 18.000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Es Durian"
+                data-price="18000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Es+Durian">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Es Jeruk -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="es jeruk.jpg" alt="Es Jeruk" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Es Jeruk</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 10.000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Es Jeruk"
+                data-price="10000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Es+Jeruk">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Es Dawet -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="es dawet.webp" alt="Es Dawet" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Es Dawet</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 12.000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Es Dawet"
+                data-price="12000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Es+Dawet">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Es Pukat Kocok -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="es pukat kocok.webp" alt="Es Pukat Kocok" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Es Pukat Kocok</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 15.000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Es Pukat Kocok"
+                data-price="15000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Es+Pukat+Kocok">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Air Putih -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="air putih.webp" alt="Air Putih" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Air Putih</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 5000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Air Putih"
+                data-price="5000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Air+Putih">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Es Batu -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="es batu.webp" alt="Es Batu" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Es Batu</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 2000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Es Batu"
+                data-price="2000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Es+Batu">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+            <!-- Es Teh -->
+            <div class="bg-white p-4 rounded-2xl border border-gray-100 relative">
+            <span class="absolute top-2 left-2 bg-yellow-400 text-yellow-900 text-xs px-2 py-1 rounded-full font-bold badge">Makanan</span>
+            <div class="product-image-container w-full h-28">
+                <img src="es teh.webp" alt="Es Teh" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-medium mt-3">Es Teh</h4>
+            <div class="mt-1"><span class="text-xl font-bold">Rp. 8000</span></div>
+            <button class="add-to-cart-btn absolute bottom-3 right-3 w-8 h-8 bg-green-600 hover:bg-green-700 text-white rounded-full flex items-center justify-center shadow-md"
+                data-name="Es Teh"
+                data-price="8000"
+                data-image="https://placehold.co/400x400/white/e0e0e0?text=Es+Teh">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+            </button>
+            </div>
+        </div>
+        </section>
+
+        <!-- ======= SUBSCRIBE & SAVE 20% ======= -->
+        <section id="subscribe" class="mt-16">
+                <div class="bg-gradient-to-r from-green-800 to-emerald-800 rounded-3xl p-8 text-white text-center md:text-left md:flex items-center justify-between" id="subscribe">
+            <div>
+                <h3 class="text-2xl md:text-3xl font-bold">Subscribe & Save</h3>
+                <p class="text-3xl md:text-4xl font-black mt-1">20% off</p>
+                <p class="text-lg opacity-90">Your Next Order</p>
+            </div>
+            <div class="mt-5 md:mt-0 w-full md:w-auto">
+                <div class="flex flex-col sm:flex-row gap-3 items-center">
+                    <input type="email" id="subscribeEmail" placeholder="Email *" class="px-5 py-3 rounded-full w-full sm:w-64 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-400" />
+                    <button class="bg-amber-500 hover:bg-amber-600 text-white font-semibold px-8 py-3 rounded-full w-full sm:w-auto transition" id="subscribeBtn">Subscribe</button>
+                </div>
+                <div id="subscribeMessage" class="text-sm mt-2 text-center md:text-left min-h-[24px]"></div>
+                <label class="flex items-center justify-center md:justify-start gap-2 mt-3 text-sm">
+                    <input type="checkbox" class="rounded bg-white" />
+                    <span>Yes, subscribe me to your newsletter.</span>
+                </label>
+            </div>
+        </div>
+</section>
+
+        <!-- ======= FOOTER / MENU LINKS ======= -->
+        <footer class="border-t border-gray-200 pt-10 mt-10">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 text-sm">
+            <div>
+            <h5 class="font-bold text-gray-900 mb-3">Pempek Bu Ida</h5>
+            <ul class="space-y-2 text-gray-600">
+                <li><a href="#" class="hover:text-green-700">Best Seller</a></li>
+                <li><a href="#" class="hover:text-green-700">Kategori</a></li>
+                <li><a href="#" class="hover:text-green-700">Belanja</a></li>
+                <li><a href="#" class="hover:text-green-700">Subscribe</a></li>
+            </ul>
+            </div>
+            <div>
+            <h5 class="font-bold text-gray-900 mb-3">Need Help?</h5>
+            <ul class="space-y-2 text-gray-600">
+                <li><a href="#" class="hover:text-green-700">FAQ</a></li>
+                <li><a href="#" class="hover:text-green-700">Visit our Customer Support</a></li>
+                <li><a href="#" class="hover:text-green-700">About Us</a></li>
+                <li><a href="#" class="hover:text-green-700">Locations</a></li>
+            </ul>
+            </div>
+            <div>
+            <h5 class="font-bold text-gray-900 mb-3">My Orders</h5>
+            <ul class="space-y-2 text-gray-600">
+                <li><a href="#" class="hover:text-green-700">Favorites</a></li>
+                <li><a href="#" class="hover:text-green-700">My Orders</a></li>
+                <li class="text-xs text-gray-500 mt-2">Call us: 123-456-7890</li>
+            </ul>
+            </div>
+            <div>
+            <h5 class="font-bold text-gray-900 mb-3">Departments</h5>
+            <ul class="space-y-2 text-gray-600">
+                <li>Pempek</li><li>Food</li><li>Tasty</li><li>Palembang</li><li>Indonesia</li>
+            </ul>
+            </div>
+            <div>
+            <h5 class="font-bold text-gray-900 mb-3">More</h5>
+            <ul class="space-y-2 text-gray-600">
+                <li>Soft Drinks</li><li>Comfort Foof</li><li>Snacks</li>
+            </ul>
+            </div>
+            <div>
+            <h5 class="font-bold text-gray-900 mb-3">Shipping & Returns</h5>
+            <ul class="space-y-2 text-gray-600">
+                <li>Terms & Conditions</li><li>Payment Methods</li>
+            </ul>
+            <div class="flex flex-wrap gap-2 mt-3 text-xs text-gray-700">
+                <span class="bg-gray-100 px-2 py-1 rounded">Mbanking</span>
+                <span class="bg-gray-100 px-2 py-1 rounded">Qris</span>
+                <span class="bg-gray-100 px-2 py-1 rounded">Seabank</span>
+                <span class="bg-gray-100 px-2 py-1 rounded">Dana/Gopay</span>
+                <span class="bg-gray-100 px-2 py-1 rounded">ShopeePay</span>
+            </div>
+            </div>
+        </div>
+        <div class="mt-10 text-center text-xs text-gray-500 border-t pt-6">
+            &copy; 2026 Pempek Bu Ida. By Aradita Ratu Disanda
+        </div>
+        </footer>
+    </main>
+
+    <!-- ======= JAVASCRIPT KERANJANG INTERAKTIF ======= -->
+    <script>
+        // State keranjang
+        let cart = [];
+
+        // Elemen DOM
+        const cartButton = document.getElementById('cartButton');
+        const cartDropdown = document.getElementById('cartDropdown');
+        const cartBadge = document.getElementById('cartBadge');
+        const cartItemsContainer = document.getElementById('cartItemsContainer');
+        const cartTotal = document.getElementById('cartTotal');
+        const cartItemCount = document.getElementById('cartItemCount');
+
+        // Toggle dropdown
+        cartButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        cartDropdown.classList.toggle('hide');
+        cartDropdown.classList.toggle('show');
+        });
+
+        // Klik di luar dropdown untuk menutup (opsional)
+        document.addEventListener('click', (e) => {
+        if (!cartButton.contains(e.target) && !cartDropdown.contains(e.target)) {
+            cartDropdown.classList.add('hide');
+            cartDropdown.classList.remove('show');
+        }
+        });
+
+        // Fungsi menambahkan produk ke keranjang
+        function addToCart(name, price, image) {
+        const existing = cart.find(item => item.name === name);
+        if (existing) {
+            existing.quantity += 1;
+        } else {
+            cart.push({ name, price: parseFloat(price), image, quantity: 1 });
+        }
+        updateCartUI();
+        }
+
+        // Fungsi menghapus produk
+        function removeFromCart(name) {
+        cart = cart.filter(item => item.name !== name);
+        updateCartUI();
+        }
+
+        // Fungsi mengupdate tampilan keranjang
+        function updateCartUI() {
+        // Update badge
+        const totalItems = cart.reduce((acc, item) => acc + item.quantity, 0);
+        if (totalItems > 0) {
+            cartBadge.textContent = totalItems;
+            cartBadge.classList.remove('hidden');
+        } else {
+            cartBadge.classList.add('hidden');
+        }
+
+        // Update item count di header dropdown
+        cartItemCount.textContent = `${totalItems} item${totalItems !== 1 ? 's' : ''}`;
+
+        // Render item di dropdown
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<div class="text-center text-gray-500 py-6">Keranjang kosong</div>';
+            cartTotal.textContent = '$0.00';
+            return;
+        }
+
+        let html = '';
+        let totalPrice = 0;
+        cart.forEach(item => {
+            const subtotal = item.price * item.quantity;
+            totalPrice += subtotal;
+            html += `
+            <div class="flex items-start gap-3 p-2 border-b border-gray-100 last:border-0">
+                <div class="w-12 h-12 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
+                </div>
+                <div class="flex-1 min-w-0">
+                <h4 class="font-medium text-sm text-gray-800 truncate">${item.name}</h4>
+                <p class="text-xs text-gray-500">$${item.price.toFixed(2)} x ${item.quantity}</p>
+                <p class="text-sm font-semibold text-gray-900 mt-1">$${subtotal.toFixed(2)}</p>
+                </div>
+                <button onclick="removeFromCart('${item.name.replace(/'/g, "\\'")}')" class="text-red-500 hover:text-red-700 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                </svg>
+                </button>
+            </div>
+            `;
+        });
+        cartItemsContainer.innerHTML = html;
+        cartTotal.textContent = `$${totalPrice.toFixed(2)}`;
+        }
+
+        // Event listener untuk semua tombol .add-to-cart-btn
+        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const name = this.dataset.name;
+            const price = this.dataset.price;
+            const image = this.dataset.image;
+            addToCart(name, price, image);
+        });
+        });
+
+        // Subscribe button (tetap)
+        document.getElementById('subscribeBtn').addEventListener('click', function() {
+            const emailInput = document.getElementById('subscribeEmail');
+            const email = emailInput.value.trim();
+            const messageDiv = document.getElementById('subscribeMessage');
+
+            if (!email) {
+                messageDiv.classList.add('text-red-600');
+                messageDiv.textContent = 'Email tidak boleh kosong!';
+                return;
+            }
+
+            //validasi format email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+            messageDiv.classList.add('text-red-600');
+            messageDiv.textContent = '❌ Format email tidak valid.';
+            return;
+    }
+
+                // Jika sukses
+            messageDiv.classList.add('text-green-600');
+            messageDiv.textContent = '✅ Berhasil! Kode diskon 20% telah dikirim ke email Anda.';
+
+            // Kosongkan input (opsional)
+            emailInput.value = '';
+
+            // Sembunyikan pesan setelah 5 detik
+            setTimeout(() => {
+                messageDiv.textContent = '';
+            }, 5000);
+        });
+    </script>
+    </body>
+    </html>
