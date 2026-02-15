@@ -2,7 +2,7 @@
     import { useCart } from '@/context/CartContext';
 
     const products = [
-    { name: 'Pempek Adaan', price: 15000, image: '/images/pempek adaan.jpg', category: 'Makanan' },
+    { name: 'Pempek Adaan', price: 15000, image: '/pempek adaan.webp', category: 'Makanan' },
     { name: 'Pempek Kapal Selam', price: 35000, image: '/images/pempek kapal selam.jpg', category: 'Makanan' },
     { name: 'Pempek Telur', price: 18000, image: '/images/pempek telur.jpg', category: 'Makanan' },
     { name: 'Pempek Kulit', price: 15000, image: '/images/pempek kulit.webp', category: 'Makanan' },
