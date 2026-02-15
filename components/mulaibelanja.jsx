@@ -3,7 +3,7 @@
 
     const products = [
     { name: 'Pempek Adaan', price: 15000, image: '/pempek adaan.jpg', category: 'Makanan' },
-    { name: 'Pempek Kapal Selam', price: 35000, image: '/e-commerce-pempek-bu-ida/images/pempek kapal selam.jpg', category: 'Makanan' },
+    { name: 'Pempek Kapal Selam', price: 35000, image: '/images/pempek kapal selam.jpg', category: 'Makanan' },
     { name: 'Pempek Telur', price: 18000, image: '/pempek telur.jpg', category: 'Makanan' },
     { name: 'Pempek Kulit', price: 15000, image: '/pempek kulit.webp', category: 'Makanan' },
     { name: 'Laksan', price: 15000, image: '/laksan.webp', category: 'Makanan' },
