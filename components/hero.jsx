@@ -26,7 +26,7 @@
             </svg>
             </div>
             <Image 
-            src="/images/Pempek-Palembang.webp" 
+            src="/e-commerce-pempek-bu-ida/images/pempek kapal selam.jpg"
             alt="Makanan Khas Palembang" 
             width={500} 
             height={300} 
